@@ -10,7 +10,13 @@ export class Transaction {
     @Column('decimal')
     total: number
 
-    @Column({type: 'timestamp', default: () => "CURRENT_TIMESTAMP(6)"})
+    @Column({ type: 'varchar', length: 30, nullable: true })
+    coupon: string
+
+    @Column({ type: 'decimal', nullable: true, default: 0 })
+    discount: number
+
+    @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP(6)" })
     transactionDate: Date
 
     @OneToMany(() => TransactionContents, (transaction) => transaction.transaction)
@@ -19,7 +25,6 @@ export class Transaction {
 
 @Entity()
 export class TransactionContents {
-
     @PrimaryGeneratedColumn()
     id: number
 
@@ -29,9 +34,9 @@ export class TransactionContents {
     @Column('decimal')
     price: number
 
-    @ManyToOne(() => Product, (product) => product.id, {eager: true, cascade: true})
+    @ManyToOne(() => Product, (product) => product.id, { eager: true, cascade: true })
     product: Product
 
-    @ManyToOne(() => Transaction, (transaction) => transaction.contents, {cascade: true})
-    transaction : Transaction
+    @ManyToOne(() => Transaction, (transaction) => transaction.contents, { cascade: true })
+    transaction: Transaction
 }
